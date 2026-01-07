@@ -149,7 +149,7 @@ class SendVisitDataIntegrationTest(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.data, {"error": "Missing IP."})
 
-    @patch("tracker.views.requests.post")
+    @patch("tracker.pixel.requests.post")
     def test_snitcher_exception(self, mock_post):
         mock_post.side_effect = Exception("Boom")
 
@@ -165,8 +165,8 @@ class SendVisitDataIntegrationTest(TestCase):
             {"error": "Failed to reach Snitcher API."}
         )
 
-    @patch("tracker.views.requests.post")
-    @patch("tracker.views.requests.get")
+    @patch("tracker.pixel.requests.post")
+    @patch("tracker.pixel.requests.get")
     def test_send_visit_data_success(self, mock_get, mock_post):
         mock_post.return_value.status_code = 200
         mock_post.return_value.json.return_value = {
@@ -227,7 +227,7 @@ class SetGoogleAdsConversionIntegrationTest(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-    @patch("tracker.views.GoogleAdsClient.load_from_dict")
+    @patch("tracker.conversions.GoogleAdsClient.load_from_dict")
     def test_set_existing_conversion(self, mock_client):
         GoogleAdsProject.objects.create(
             user=self.user,
@@ -257,8 +257,8 @@ class GetPixelDataWebhookIntegrationTest(TestCase):
         self.client = APIClient()
         self.url = "/api/tracker/webhook/"
 
-    @patch("tracker.views.handle_company_visit")
-    @patch("tracker.views.extract_tracking_data")
+    @patch("tracker.webhooks.handle_company_visit")
+    @patch("tracker.webhooks.extract_tracking_data")
     def test_webhook_success(self, mock_extract, mock_handle):
         mock_extract.return_value = {
             "internal_identifier": "test@test.com",
@@ -278,7 +278,7 @@ class GetPixelDataWebhookIntegrationTest(TestCase):
         mock_extract.assert_called_once()
         mock_handle.assert_called_once()
 
-    @patch("tracker.views.extract_tracking_data")
+    @patch("tracker.webhooks.extract_tracking_data")
     def test_webhook_unparseable_payload(self, mock_extract):
         mock_extract.return_value = None
 

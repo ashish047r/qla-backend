@@ -228,7 +228,7 @@ class SendVisitDataViewTest(TestCase):
     # =====================================================
     # TEST CASE 4: Snitcher API request failure
     # =====================================================
-    @patch("tracker.views.requests.post")
+    @patch("tracker.pixel.requests.post")
     def test_send_visit_data_snitcher_exception(self, mock_post):
         mock_post.side_effect = Exception("Boom")
 
@@ -249,7 +249,7 @@ class SendVisitDataViewTest(TestCase):
     # =====================================================
     # TEST CASE 5: Snitcher returns 202 (queued)
     # =====================================================
-    @patch("tracker.views.requests.post")
+    @patch("tracker.pixel.requests.post")
     def test_send_visit_data_snitcher_queued(self, mock_post):
         mock_response = MagicMock()
         mock_response.status_code = 202
@@ -272,7 +272,7 @@ class SendVisitDataViewTest(TestCase):
     # =====================================================
     # TEST CASE 6: Snitcher returns 404 (company not found)
     # =====================================================
-    @patch("tracker.views.requests.post")
+    @patch("tracker.pixel.requests.post")
     def test_send_visit_data_snitcher_not_found(self, mock_post):
         mock_response = MagicMock()
         mock_response.status_code = 404
@@ -297,8 +297,8 @@ class SendVisitDataViewTest(TestCase):
     # =====================================================
     # TEST CASE 7: Successful visit creation
     # =====================================================
-    @patch("tracker.views.requests.get")
-    @patch("tracker.views.requests.post")
+    @patch("tracker.pixel.requests.get")
+    @patch("tracker.pixel.requests.post")
     def test_send_visit_data_success(self, mock_post, mock_get):
         # ---- Snitcher success ----
         snitcher_resp = MagicMock()
@@ -397,7 +397,7 @@ class SetGoogleConversionEventViewTest(TestCase):
     # =====================================================
     # TEST CASE 2: Set existing conversion action
     # =====================================================
-    @patch("tracker.views.GoogleAdsClient.load_from_dict")
+    @patch("tracker.conversions.GoogleAdsClient.load_from_dict")
     def test_set_google_conversion_existing(self, mock_google_client):
         GoogleAdsProject.objects.create(
             user=self.user,
@@ -434,8 +434,8 @@ class SetGoogleConversionEventViewTest(TestCase):
     # =====================================================
     # TEST CASE 3: Create new conversion action
     # =====================================================
-    @patch("tracker.views.create_google_ads_custom_conversion")
-    @patch("tracker.views.GoogleAdsClient.load_from_dict")
+    @patch("tracker.conversions.create_google_ads_custom_conversion")
+    @patch("tracker.conversions.GoogleAdsClient.load_from_dict")
     def test_set_google_conversion_new(self, mock_google_client, mock_create_conversion):
         GoogleAdsProject.objects.create(
             user=self.user,
@@ -477,7 +477,7 @@ class SetGoogleConversionEventViewTest(TestCase):
     # =====================================================
     # TEST CASE 4: Invalid request type
     # =====================================================
-    @patch("tracker.views.GoogleAdsClient.load_from_dict")
+    @patch("tracker.conversions.GoogleAdsClient.load_from_dict")
     def test_set_google_conversion_invalid_type(self, mock_google_client):
         GoogleAdsProject.objects.create(
             user=self.user,
@@ -524,8 +524,8 @@ class GetPixelDataWebhookTest(TestCase):
     # =====================================================
     # TEST CASE 1: Webhook succeeds with valid payload
     # =====================================================
-    @patch("tracker.views.handle_company_visit")
-    @patch("tracker.views.extract_tracking_data")
+    @patch("tracker.webhooks.handle_company_visit")
+    @patch("tracker.webhooks.extract_tracking_data")
     def test_webhook_success_with_valid_payload(
         self,
         mock_extract_tracking_data,
@@ -575,8 +575,8 @@ class GetPixelDataWebhookTest(TestCase):
     # =====================================================
     # TEST CASE 2: Webhook succeeds but extract_tracking_data returns None
     # =====================================================
-    @patch("tracker.views.handle_company_visit")
-    @patch("tracker.views.extract_tracking_data")
+    @patch("tracker.webhooks.handle_company_visit")
+    @patch("tracker.webhooks.extract_tracking_data")
     def test_webhook_success_with_unparseable_payload(
         self,
         mock_extract_tracking_data,
@@ -606,8 +606,8 @@ class GetPixelDataWebhookTest(TestCase):
     # =====================================================
     # TEST CASE 3: Webhook with completely empty payload
     # =====================================================
-    @patch("tracker.views.handle_company_visit")
-    @patch("tracker.views.extract_tracking_data")
+    @patch("tracker.webhooks.handle_company_visit")
+    @patch("tracker.webhooks.extract_tracking_data")
     def test_webhook_with_empty_payload(
         self,
         mock_extract_tracking_data,
