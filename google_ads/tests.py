@@ -110,7 +110,7 @@ class GoogleAdsListClientsTest(TestCase):
             refresh_token="fake_refresh_token"
         )
 
-    @patch("google_ads.views.GoogleAdsClient.load_from_dict")
+    @patch("google_ads.services.google_ads_client.GoogleAdsClient.load_from_dict")
     def test_list_clients_returns_accounts(self, mock_google_client):
         # ---- mock Google Ads client ----
         mock_client_instance = MagicMock()

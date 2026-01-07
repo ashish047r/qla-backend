@@ -1,5 +1,9 @@
 from django.urls import path
-from .views import VerifyPixelView, SendVisitDataView, GetVisitDataView, VisitToGoogleAdsConversionView, SetGoogleConversionEventView , VisitToFacebookAdsConversionView, SetFacebookConversionEventView, GetCompanyVisitDataView, ConversionStatusCronView, GetPixelData, ListRadarPixel, RadarWebhookConfig, DeactivateRadarTracking, ActivateRadarTracking, FindCompanyByIP, TestWebhookView,CreateCompanyView
+from .views import GetCompanyVisitDataView, ConversionStatusCronView
+from .pixel import VerifyPixelView, SendVisitDataView, GetVisitDataView, ListRadarPixel, RadarWebhookConfig, DeactivateRadarTracking, ActivateRadarTracking
+from .conversions import VisitToGoogleAdsConversionView, SetGoogleConversionEventView, VisitToFacebookAdsConversionView, SetFacebookConversionEventView
+from .companies import FindCompanyByIP, CreateCompanyView
+from .webhooks import GetPixelData, TestWebhookView
 
 
 urlpatterns = [

@@ -3,6 +3,9 @@ from .views import (
     GetContactFromHubspotView,
     GetUrlView,
     GetTokenView,
+    HubspotIndexView,
+)
+from .accounts import (
     ConnectAccountView,
     DetachAccountView,
     HubspotRefreshView,
@@ -15,5 +18,4 @@ urlpatterns = [
     path("detach-account/", DetachAccountView.as_view(), name="detach-account"),
     path("refresh/", HubspotRefreshView.as_view(), name="refresh"),
     path("search-contact/", GetContactFromHubspotView.as_view(), name="search-contact"),
-
 ]

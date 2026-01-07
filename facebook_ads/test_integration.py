@@ -37,7 +37,7 @@ class FacebookGetTokenIntegrationTest(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    @patch("facebook_ads.views.requests.get")
+    @patch("facebook_ads.oauth.requests.get")
     def test_get_token_creates_facebook_project(self, mock_requests_get):
         mock_response = MagicMock()
         mock_response.json.return_value = {
@@ -74,7 +74,7 @@ class FacebookListClientsIntegrationTest(TestCase):
             access_token="fake_fb_access_token"
         )
 
-    @patch("facebook_ads.views.requests.get")
+    @patch("facebook_ads.accounts.requests.get")
     def test_list_clients_success(self, mock_requests_get):
         mock_response = MagicMock()
         mock_response.json.return_value = {

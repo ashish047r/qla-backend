@@ -44,7 +44,7 @@ class FacebookAdsGetTokenTest(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    @patch("facebook_ads.views.requests.get")
+    @patch("facebook_ads.oauth.requests.get")
     def test_get_token_saves_access_token(self, mock_requests_get):
         # ---- mock Facebook token API ----
         mock_response = MagicMock()
@@ -90,7 +90,7 @@ class FacebookAdsListClientsTest(TestCase):
             access_token="fake_fb_access_token"
         )
 
-    @patch("facebook_ads.views.requests.get")
+    @patch("facebook_ads.accounts.requests.get")
     def test_list_clients_returns_accounts(self, mock_requests_get):
         # ---- mock Facebook ad accounts API ----
         mock_response = MagicMock()
